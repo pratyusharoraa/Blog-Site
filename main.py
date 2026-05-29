@@ -8,7 +8,8 @@ from schemas import (
     PostResponse,
     PostUpdate,
     UserCreate,
-    UserResponse,
+    UserPublic,
+    UserPrivate,
     UserUpdate
 )
 from typing import Annotated
@@ -125,6 +126,23 @@ async def user_posts_page(
 
 #<--Delete post route--> (moved to posts.py API router)
 
+#<--User login route-->
+@app.get("/login", include_in_schema=False)
+async def login_page(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "login.html",
+        {"title": "Login"},
+    )
+
+#<--User register route-->
+@app.get("/register", include_in_schema=False)
+async def register_page(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "register.html",
+        {"title": "Register"},
+    )
 
 ##<--Exception handling-->
 #<--General HTTP exception-->
