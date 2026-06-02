@@ -64,8 +64,9 @@ class Post(Base):
     )
     date_posted: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.utc)
     )
+    likes: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
 
     author: Mapped[User] = relationship(back_populates="posts")
 
@@ -78,7 +79,7 @@ class PasswordResetToken(Base):
     token_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        nullable=False,
+        nullable=False
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

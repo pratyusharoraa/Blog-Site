@@ -1,4 +1,11 @@
 import asyncio
+import sys
+
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(
+        asyncio.WindowsSelectorEventLoopPolicy()
+    )
+
 from datetime import timezone, datetime, timedelta
 from pathlib import Path
 
@@ -6,7 +13,7 @@ import httpx
 from sqlalchemy import delete, select, update
 
 import models
-from database import AsyncSessionLocal, Base, engine
+from database import AsyncSessionLocal, engine
 from image_utils import PROFILE_PICS_DIR
 from main import app
 
@@ -283,9 +290,6 @@ async def update_post_dates() -> None:
 
 
 async def populate() -> None:
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
     transport = httpx.ASGITransport(app=app)
 
     async with httpx.AsyncClient(

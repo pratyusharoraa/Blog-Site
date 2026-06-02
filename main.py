@@ -16,7 +16,7 @@ from typing import Annotated
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 import models
-from database import Base, engine, get_db
+from database import engine, get_db
 from contextlib import asynccontextmanager
 from fastapi.exception_handlers import (
     http_exception_handler,
@@ -27,11 +27,9 @@ from routers import posts, users
 from config import settings
 
 
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    # Startup
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
     yield
     # Shutdown
     await engine.dispose()
