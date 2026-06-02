@@ -6,7 +6,7 @@ import httpx
 from sqlalchemy import delete, select, update
 
 import models
-from database import AsyncSessionLocal, engine
+from database import AsyncSessionLocal, Base, engine
 from image_utils import PROFILE_PICS_DIR
 from main import app
 
@@ -15,37 +15,37 @@ POPULATE_IMAGES_DIR = Path("populate_images")
 USERS = [
     {
         "username": "PratyushArora",
-        "email": "PratyushArora@gmail.com",
+        "email": "PratyushArora@niwgknda.mailosaur.net",
         "password": "TestPassword1!",
         "image": "pratyush.png",
     },
     {
         "username": "DefaultDude",
-        "email": "TestEmail2@test.com",
+        "email": "TestEmail2@niwgknda.mailosaur.net",
         "password": "TestPassword2!",
         # No image - uses default
     },
     {
         "username": "BhupinderTheGoat",
-        "email": "TestEmail3@test.com",
+        "email": "TestEmail3@niwgknda.mailosaur.net",
         "password": "TestPassword3!",
         "image": "bhupinder.jpg",
     },
     {
         "username": "SantoshKiraneWala",
-        "email": "TestEmail4@test.com",
+        "email": "TestEmail4@niwgknda.mailosaur.net",
         "password": "TestPassword4!",
         "image": "santosh.jpg",
     },
     {
         "username": "Bhuri&Bhura",
-        "email": "TestEmail5@test.com",
+        "email": "TestEmail5@niwgknda.mailosaur.net",
         "password": "TestPassword5!",
         "image": "bhuri_or_bhura.jpg",
     },
     {
         "username": "CutieKiran",
-        "email": "TestEmail6@test.com",
+        "email": "TestEmail6@niwgknda.mailosaur.net",
         "password": "TestPassword6!",
         "image": "kiran.jpg",
     },
@@ -57,7 +57,7 @@ POSTS = [
         "content": "FastAPI has completely changed how I build APIs. The automatic documentation, type hints, and async support make development so much faster. Plus, the performance is incredible!",
     },
     {
-        "title": "Corey Schafer Has the Best YouTube Tutorials!",
+        "title": "Pratyush Arora Has the Best YouTube Tutorials!",
         "content": "This was written by a viewer and definitely not by me... I mean him. Totally not written by him, but by me... a real viewer. Seriously, check out his channel for amazing Python content.",
     },
     {
@@ -65,7 +65,7 @@ POSTS = [
         "content": "I've been struggling with async programming for months, but FastAPI's approach finally made it click. Using 'async def' for endpoints and 'await' for database calls just makes sense.",
     },
     {
-        "title": "Schafer? I Barely Know Her!",
+        "title": "Arora? I Barely Know Him!",
         "content": "Is anyone actually reading these blog posts? Do they really need to say anything? I can keep going all day. At least AI can... Claude, keep going, please.",
     },
     {
@@ -114,7 +114,7 @@ POSTS = [
     },
     {
         "title": "Path Parameters vs Query Parameters",
-        "content": "Use path parameters for required resource identifiers (/users/123) and query parameters for optional filters (/posts?author=corey&limit=10). FastAPI handles both beautifully with automatic validation.",
+        "content": "Use path parameters for required resource identifiers (/users/123) and query parameters for optional filters (/posts?author=pratyush&limit=10). FastAPI handles both beautifully with automatic validation.",
     },
     {
         "title": "Error Handling Done Right",
@@ -243,6 +243,7 @@ async def clear_existing_data() -> None:
 
     # Clear database tables (order respects foreign keys)
     async with AsyncSessionLocal() as db:
+        await db.execute(delete(models.PasswordResetToken))
         await db.execute(delete(models.Post))
         await db.execute(delete(models.User))
         await db.commit()
@@ -282,6 +283,9 @@ async def update_post_dates() -> None:
 
 
 async def populate() -> None:
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
     transport = httpx.ASGITransport(app=app)
 
     async with httpx.AsyncClient(
