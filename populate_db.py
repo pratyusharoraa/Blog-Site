@@ -65,15 +65,15 @@ POSTS = [
         "content": "FastAPI has completely changed how I build APIs. The automatic documentation, type hints, and async support make development so much faster. Plus, the performance is incredible!",
     },
     {
-        "title": "Pratyush Arora Has the Best YouTube Tutorials!",
-        "content": "This was written by a viewer and definitely not by me... I mean him. Totally not written by him, but by me... a real viewer. Seriously, check out his channel for amazing Python content.",
+        "title": "Pratyush Arora Has the Best FastAPI Websites!",
+        "content": "This was written by an admirer and definitely not by me... I mean him. Totally not written by him, but by me... a real admirer. Seriously, check out his work for amazing FastAPI backend websites.",
     },
     {
         "title": "Async/Await Finally Clicked",
         "content": "I've been struggling with async programming for months, but FastAPI's approach finally made it click. Using 'async def' for endpoints and 'await' for database calls just makes sense.",
     },
     {
-        "title": "Arora? I Barely Know Him!",
+        "title": "Arora saab? I Barely Know Him!",
         "content": "Is anyone actually reading these blog posts? Do they really need to say anything? I can keep going all day. At least AI can... Claude, keep going, please.",
     },
     {
